@@ -121,14 +121,14 @@ export default function App() {
               isFriendMode={isFriendMode}
               onSelectOption={handleSelectOption}
             />
-            <AdBanner slotLabel="Mid-Quiz Native Ad" format="horizontal" />
+            <AdBanner adSlot="1234567890" format="horizontal" />
           </>
         )}
 
         {view === "share" && (
           <>
             <ShareModal shareUrl={shareUrl} onRestart={handleResetToCreate} />
-            <AdBanner slotLabel="Post-Share Rectangle" format="box" />
+            <AdBanner adSlot="0987654321" format="rectangle" />
           </>
         )}
 
