@@ -8,6 +8,7 @@ export default function QuizQuestion({
   isFriendMode,
   onSelectOption,
 }) {
+  if (!questionData) return null;
   const progressPercent = Math.round(
     ((currentIndex + 1) / totalQuestions) * 100,
   );

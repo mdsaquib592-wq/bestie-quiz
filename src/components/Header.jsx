@@ -1,6 +1,6 @@
 import React from "react";
 
-export default function Header({ onReset }) {
+export default function Header({ onReset, onOpenResults, hasSavedQuiz }) {
   return (
     <header className="w-full max-w-md flex items-center justify-between py-3">
       <button
@@ -17,9 +17,20 @@ export default function Header({ onReset }) {
           </p>
         </div>
       </button>
-      <span className="text-[11px] font-semibold px-2.5 py-1 rounded-full bg-slate-900 border border-slate-800 text-slate-300">
-        Viral Quiz
-      </span>
+
+      <div className="flex items-center gap-2">
+        {hasSavedQuiz && (
+          <button
+            onClick={onOpenResults}
+            className="text-[11px] font-bold px-3 py-1.5 rounded-full bg-pink-500/20 hover:bg-pink-500/30 text-pink-300 border border-pink-500/40 transition cursor-pointer"
+          >
+            📊 My Results
+          </button>
+        )}
+        <span className="text-[11px] font-semibold px-2.5 py-1.5 rounded-full bg-slate-900 border border-slate-800 text-slate-300">
+          Viral Quiz
+        </span>
+      </div>
     </header>
   );
 }

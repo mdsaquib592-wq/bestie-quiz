@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 
-export default function ShareModal({ shareUrl, onRestart }) {
+export default function ShareModal({ shareUrl, onRestart, onViewResults }) {
   const [copied, setCopied] = useState(false);
 
   const handleCopy = async () => {
@@ -14,7 +14,7 @@ export default function ShareModal({ shareUrl, onRestart }) {
   };
 
   const shareText = encodeURIComponent(
-    `🔥 How well do you really know me? Take the 2026 Friendship Challenge and check your score! 👇\n${shareUrl}`,
+    `🔥 How well do you really know me? Take the 2026 Friendship Challenge and check your score on the leaderboard! 👇\n${shareUrl}`,
   );
   const whatsappUrl = `https://api.whatsapp.com/send?text=${shareText}`;
   const telegramUrl = `https://t.me/share/url?url=${encodeURIComponent(shareUrl)}&text=${encodeURIComponent("How well do you know me? Take my quiz!")}`;
@@ -31,6 +31,7 @@ export default function ShareModal({ shareUrl, onRestart }) {
         you best!
       </p>
 
+      {/* Copy Link Bar */}
       <div className="flex items-center gap-2 bg-slate-800/80 p-2 rounded-xl border border-slate-700 mb-4">
         <input
           type="text"
@@ -46,6 +47,7 @@ export default function ShareModal({ shareUrl, onRestart }) {
         </button>
       </div>
 
+      {/* Social Share Buttons */}
       <div className="space-y-3">
         <a
           href={whatsappUrl}
@@ -64,6 +66,14 @@ export default function ShareModal({ shareUrl, onRestart }) {
         >
           Share on Telegram
         </a>
+
+        {/* View Results / Leaderboard Button */}
+        <button
+          onClick={onViewResults}
+          className="w-full py-3.5 px-4 rounded-xl bg-slate-800 hover:bg-slate-700 border border-slate-700 text-slate-200 font-bold text-sm flex items-center justify-center gap-2 transition cursor-pointer"
+        >
+          📊 Check Live Results & Scoreboard
+        </button>
       </div>
 
       <button
