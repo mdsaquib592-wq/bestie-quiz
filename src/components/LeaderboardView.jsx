@@ -6,13 +6,22 @@ export default function LeaderboardView({
   questions,
   creatorAnswers,
   results = [],
+  onRefresh,
   onBack,
   onCreateNew,
 }) {
   const [selectedFriend, setSelectedFriend] = useState(null);
+  const [isRefreshing, setIsRefreshing] = useState(false);
 
   // Sort scores descending (highest score first)
   const sortedResults = [...results].sort((a, b) => b.score - a.score);
+
+  const handleManualRefresh = async () => {
+    if (!onRefresh) return;
+    setIsRefreshing(true);
+    await onRefresh();
+    setTimeout(() => setIsRefreshing(false), 600);
+  };
 
   return (
     <div className="w-full max-w-md bg-slate-900/90 border border-slate-800/90 backdrop-blur-xl rounded-3xl p-5 sm:p-7 shadow-2xl text-center">
@@ -24,9 +33,12 @@ export default function LeaderboardView({
         >
           ← Back
         </button>
-        <span className="text-xs font-bold text-pink-400 uppercase tracking-wider">
-          Live Scoreboard
-        </span>
+        <button
+          onClick={handleManualRefresh}
+          className="text-xs font-bold text-pink-400 hover:text-pink-300 flex items-center gap-1 cursor-pointer"
+        >
+          {isRefreshing ? "⏳ Syncing..." : "🔄 Refresh Live Scores"}
+        </button>
         <button
           onClick={onCreateNew}
           className="text-xs text-indigo-400 hover:text-indigo-300 font-semibold cursor-pointer"
@@ -49,9 +61,14 @@ export default function LeaderboardView({
         <div className="py-10 px-4 bg-slate-800/40 rounded-2xl border border-dashed border-slate-700/60 my-4">
           <p className="text-3xl mb-2">⏳</p>
           <p className="text-sm font-bold text-slate-300">No attempts yet!</p>
-          <p className="text-xs text-slate-400 mt-1">
-            Share your quiz link on WhatsApp or Instagram stories to see your
-            friends appear here.
+          <p className="text-xs text-slate-400 mt-1 leading-relaxed">
+            Apna quiz link WhatsApp par friends ko bhejein. Jaise hi wo quiz
+            dekar{" "}
+            <span className="text-emerald-400 font-semibold">
+              "Send Score on WhatsApp"
+            </span>{" "}
+            par click karenge ya online submit karenge, unka result yahan dikhne
+            lagega!
           </p>
         </div>
       ) : (
@@ -71,9 +88,7 @@ export default function LeaderboardView({
               <div
                 key={res.id || index}
                 onClick={() =>
-                  setSelectedFriend(
-                    selectedFriend?.name === res.name ? null : res,
-                  )
+                  setSelectedFriend(selectedFriend?.id === res.id ? null : res)
                 }
                 className="w-full p-3.5 rounded-2xl bg-slate-800/80 hover:bg-slate-800 border border-slate-700/70 flex items-center justify-between text-left transition cursor-pointer group"
               >
@@ -86,7 +101,7 @@ export default function LeaderboardView({
                       {res.name}
                     </h4>
                     <p className="text-[10px] text-slate-400">
-                      {res.date || "Just now"} • Click to see answers
+                      {res.date || "Just now"} • Tap to see answers
                     </p>
                   </div>
                 </div>
@@ -114,7 +129,7 @@ export default function LeaderboardView({
             </h4>
             <button
               onClick={() => setSelectedFriend(null)}
-              className="text-[11px] text-slate-400 hover:text-white"
+              className="text-[11px] text-slate-400 hover:text-white cursor-pointer"
             >
               ✕ Close
             </button>
